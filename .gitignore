@@ -1,38 +1,8 @@
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
 .venv/
-venv/
-
-# Test and tooling caches
+__pycache__/
+*.pyc
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
-coverage.xml
-.coverage
-htmlcov/
-
-# Local configuration and generated outputs
-.env
-logs/
-models/
-outputs/
-results/
-
-# SUMO generated files
-*.net.xml
-*.rou.xml
-*.sumocfg
-*.trips.xml
-*.vehroute.xml
-*.conn.xml
-*.nod.xml
-*.edg.xml
-*.log
-
-# IDE and OS files
-.vscode/
-.idea/
-Thumbs.db
-desktop.ini
+runs/*
+!runs/.gitkeep
+data/generated/
+*.egg-info/
