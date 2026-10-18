@@ -1,0 +1,12 @@
+torch
+gymnasium
+pettingzoo
+numpy
+pandas
+matplotlib
+tensorboard
+pytest
+pyyaml
+libsumo
+traci
+sumolib
