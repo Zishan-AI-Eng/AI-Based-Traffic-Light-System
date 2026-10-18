@@ -5,7 +5,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sandbox = os.path.join(ROOT, "data", "sandbox")
 cfg = os.path.join(sandbox, "run.sumocfg")
 
-traffic = {"medium": "test_a.rou.xml", "rush": "test_d.rou.xml"}
+traffic = {"medium": "test_a.rou.xml", "rush": "test_d.rou.xml", "asym": "asym_a.rou.xml"}
 
 for name, rou in traffic.items():
     env = SumoTrafficEnv(cfg, route_file=os.path.join(sandbox, rou))

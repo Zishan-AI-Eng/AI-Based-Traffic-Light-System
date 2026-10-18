@@ -131,6 +131,8 @@ class SumoTrafficEnv(gym.Env):
     # ---------- Gymnasium API ----------
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
+        if options and "route_file" in options:
+            self.route_file = options["route_file"]
         self._close()
         self._start(seed if seed is not None else 0)
         self._reset_internal()
@@ -162,6 +164,7 @@ class SumoTrafficEnv(gym.Env):
         truncated = traci.simulation.getTime() >= self.episode_length
         steps = max(self.m_steps, 1)
         info = {
+            "applied": action,
             "switches": self.switches,
             "avg_wait": self.m_wait / steps,
             "avg_queue": self.m_queue / steps,
