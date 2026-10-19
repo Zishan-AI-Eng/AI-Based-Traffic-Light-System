@@ -1,0 +1,26 @@
+<routes>
+  <route id="r_B1A1_A1B3" edges="B1A1 A1B3"/>
+  <route id="r_B1A1_A1B2" edges="B1A1 A1B2"/>
+  <route id="r_B1A1_A1B4" edges="B1A1 A1B4"/>
+  <route id="r_B2A1_A1B4" edges="B2A1 A1B4"/>
+  <route id="r_B2A1_A1B1" edges="B2A1 A1B1"/>
+  <route id="r_B2A1_A1B3" edges="B2A1 A1B3"/>
+  <route id="r_B3A1_A1B1" edges="B3A1 A1B1"/>
+  <route id="r_B3A1_A1B2" edges="B3A1 A1B2"/>
+  <route id="r_B3A1_A1B4" edges="B3A1 A1B4"/>
+  <route id="r_B4A1_A1B2" edges="B4A1 A1B2"/>
+  <route id="r_B4A1_A1B1" edges="B4A1 A1B1"/>
+  <route id="r_B4A1_A1B3" edges="B4A1 A1B3"/>
+  <flow id="f_B1A1_A1B3" route="r_B1A1_A1B3" begin="0" end="600" probability="0.00833" departLane="best" departSpeed="max"/>
+  <flow id="f_B1A1_A1B2" route="r_B1A1_A1B2" begin="0" end="600" probability="0.00278" departLane="best" departSpeed="max"/>
+  <flow id="f_B1A1_A1B4" route="r_B1A1_A1B4" begin="0" end="600" probability="0.00278" departLane="best" departSpeed="max"/>
+  <flow id="f_B2A1_A1B4" route="r_B2A1_A1B4" begin="0" end="600" probability="0.11667" departLane="best" departSpeed="max"/>
+  <flow id="f_B2A1_A1B1" route="r_B2A1_A1B1" begin="0" end="600" probability="0.03889" departLane="best" departSpeed="max"/>
+  <flow id="f_B2A1_A1B3" route="r_B2A1_A1B3" begin="0" end="600" probability="0.03889" departLane="best" departSpeed="max"/>
+  <flow id="f_B3A1_A1B1" route="r_B3A1_A1B1" begin="0" end="600" probability="0.00833" departLane="best" departSpeed="max"/>
+  <flow id="f_B3A1_A1B2" route="r_B3A1_A1B2" begin="0" end="600" probability="0.00278" departLane="best" departSpeed="max"/>
+  <flow id="f_B3A1_A1B4" route="r_B3A1_A1B4" begin="0" end="600" probability="0.00278" departLane="best" departSpeed="max"/>
+  <flow id="f_B4A1_A1B2" route="r_B4A1_A1B2" begin="0" end="600" probability="0.11667" departLane="best" departSpeed="max"/>
+  <flow id="f_B4A1_A1B1" route="r_B4A1_A1B1" begin="0" end="600" probability="0.03889" departLane="best" departSpeed="max"/>
+  <flow id="f_B4A1_A1B3" route="r_B4A1_A1B3" begin="0" end="600" probability="0.03889" departLane="best" departSpeed="max"/>
+</routes>

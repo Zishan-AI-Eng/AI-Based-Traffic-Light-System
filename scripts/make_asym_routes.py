@@ -16,7 +16,7 @@ def _dot(a, b):
 
 
 def make_asym_routes(net_file, out_file, tl_node="A1",
-                     heavy_vph=700, light_vph=50, duration=600):
+                     heavy_vph=700, light_vph=50, duration=600, swap=False):
     net = sumolib.net.readNet(net_file)
     node = net.getNode(tl_node)
     incoming = list(node.getIncoming())
@@ -30,11 +30,12 @@ def make_asym_routes(net_file, out_file, tl_node="A1",
     opposite = min((i for i in ids if i != first),
                    key=lambda i: _dot(in_dir[first], in_dir[i]))
     heavy_axis = {first, opposite}
+    if swap:                                   # heavy aur light axis ulat do
+        heavy_axis = set(ids) - heavy_axis
 
     routes, flows = [], []
     for i in ids:
         vph = heavy_vph if i in heavy_axis else light_vph
-        # outgoing ko "seedha" se "U-turn" tak sort karo
         outs = sorted(out_dir, key=lambda o: -_dot(in_dir[i], out_dir[o]))
         straight, others = outs[0], outs[1:-1]
         options = [(straight, 0.6)] + [(o, 0.4 / len(others)) for o in others]
@@ -55,5 +56,6 @@ def make_asym_routes(net_file, out_file, tl_node="A1",
 
 
 if __name__ == "__main__":
-    make_asym_routes(os.path.join(SANDBOX, "single.net.xml"),
-                     os.path.join(SANDBOX, "asym_a.rou.xml"))
+    net = os.path.join(SANDBOX, "single.net.xml")
+    make_asym_routes(net, os.path.join(SANDBOX, "asym_a.rou.xml"))
+    make_asym_routes(net, os.path.join(SANDBOX, "asym_swap.rou.xml"), swap=True)

@@ -4,17 +4,21 @@ import torch
 import torch.nn as nn
 
 
-class QNetwork(nn.Module):
+class DuelingQNetwork(nn.Module):
+    """State value V(s) aur action advantage A(s,a) alag seekhta hai."""
     def __init__(self, obs_size, n_actions, hidden=128):
         super().__init__()
-        self.net = nn.Sequential(
+        self.body = nn.Sequential(
             nn.Linear(obs_size, hidden), nn.ReLU(),
             nn.Linear(hidden, hidden), nn.ReLU(),
-            nn.Linear(hidden, n_actions),
         )
+        self.value = nn.Linear(hidden, 1)
+        self.adv = nn.Linear(hidden, n_actions)
 
     def forward(self, x):
-        return self.net(x)
+        h = self.body(x)
+        a = self.adv(h)
+        return self.value(h) + a - a.mean(1, keepdim=True)
 
 
 class ReplayBuffer:
@@ -45,18 +49,18 @@ class ReplayBuffer:
 
 
 class DQNAgent:
-    def __init__(self, obs_size, n_actions, lr=1e-3, gamma=0.95,
-                 buffer_size=50000, batch_size=64, target_update=250):
+    """Double DQN + Dueling network + soft target update (v3)."""
+    def __init__(self, obs_size, n_actions, lr=5e-4, gamma=0.95,
+                 buffer_size=50000, batch_size=128, tau=0.005):
         self.n_actions = n_actions
         self.gamma = gamma
         self.batch_size = batch_size
-        self.target_update = target_update
-        self.q = QNetwork(obs_size, n_actions)
-        self.target = QNetwork(obs_size, n_actions)
+        self.tau = tau
+        self.q = DuelingQNetwork(obs_size, n_actions)
+        self.target = DuelingQNetwork(obs_size, n_actions)
         self.target.load_state_dict(self.q.state_dict())
         self.opt = torch.optim.Adam(self.q.parameters(), lr=lr)
         self.buffer = ReplayBuffer(buffer_size, obs_size)
-        self.learn_steps = 0
 
     def act(self, obs, epsilon=0.0):
         if random.random() < epsilon:
@@ -71,15 +75,18 @@ class DQNAgent:
         o, a, r, o2, d = self.buffer.sample(self.batch_size)
         q = self.q(o).gather(1, a.unsqueeze(1)).squeeze(1)
         with torch.no_grad():
-            target = r + self.gamma * self.target(o2).max(1).values * (1 - d)
+            best = self.q(o2).argmax(1, keepdim=True)                 # Double DQN
+            next_q = self.target(o2).gather(1, best).squeeze(1)
+            target = r + self.gamma * next_q * (1 - d)
         loss = nn.functional.smooth_l1_loss(q, target)
         self.opt.zero_grad()
         loss.backward()
         nn.utils.clip_grad_norm_(self.q.parameters(), 10.0)
         self.opt.step()
-        self.learn_steps += 1
-        if self.learn_steps % self.target_update == 0:
-            self.target.load_state_dict(self.q.state_dict())
+        # soft (Polyak) target update
+        with torch.no_grad():
+            for tp, p in zip(self.target.parameters(), self.q.parameters()):
+                tp.mul_(1 - self.tau).add_(self.tau * p)
         return loss.item()
 
     def save(self, path):
